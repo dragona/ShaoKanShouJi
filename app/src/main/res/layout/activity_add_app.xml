@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="@string/app_restricted_name" />
+
+        <Spinner
+            android:id="@+id/sp_choose_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/duration"
+            android:layout_marginHorizontal="10dp"/>
+
+        <Spinner
+            android:id="@+id/sp_duration_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/duration"
+            android:layout_marginHorizontal="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:layout_marginHorizontal="10dp"/>
+        <Spinner
+            android:id="@+id/sp_duration_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/duration"
+            android:layout_marginHorizontal="10dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time_sum"
+            android:layout_marginHorizontal="10dp"/>
+
+        <Spinner
+            android:id="@+id/sp_time_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/hour"
+            android:layout_marginHorizontal="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="h"
+            android:layout_marginHorizontal="10dp"/>
+        <Spinner
+            android:id="@+id/sp_time_minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/minute"
+            android:layout_marginHorizontal="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="m"
+            android:layout_marginHorizontal="10dp"/>
+    </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_add_done"
+        android:text="@string/done"
+        android:layout_marginVertical="20dp"/>
+</LinearLayout>
