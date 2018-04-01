@@ -1,5 +1,7 @@
 package com.shaokanshouji.zwj.App;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,6 +18,7 @@ public class EnterPasswordActivity extends AppCompatActivity {
     private TextView mTextViewEnterPassword;
     private EditText mEditTextVerifyPassword;
     private Button mButtonVerifyPassword;
+    private SharedPreferences mSharedPreferences;
 
     public static final String EXTRA_WHO_CALL_ME ="com.ShaoKanShouJi.zwj.App";
     private String who;
@@ -29,6 +32,7 @@ public class EnterPasswordActivity extends AppCompatActivity {
         mTextViewEnterPassword = findViewById(R.id.tv_enter_password);
         mEditTextVerifyPassword = findViewById(R.id.et_verify_password);
         mButtonVerifyPassword = findViewById(R.id.btn_verify_password);
+        mSharedPreferences = getSharedPreferences("ShaoKanShouJi", Context.MODE_PRIVATE);
 
         switch(who)
         {
@@ -42,15 +46,25 @@ public class EnterPasswordActivity extends AppCompatActivity {
         mButtonVerifyPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(EnterPasswordActivity.this,who,Toast.LENGTH_LONG).show();
-                switch(who)
+                //mSharedPreferences.edit().clear().commit();
+                String enterPassword = mEditTextVerifyPassword.getText().toString();
+                String password = mSharedPreferences.getString("password","");
+                if(password.equals(enterPassword)) {
+                    Toast.makeText(EnterPasswordActivity.this, "password correct", Toast.LENGTH_LONG).show();
+                    Toast.makeText(EnterPasswordActivity.this, who, Toast.LENGTH_LONG).show();
+                    switch (who) {
+                        case "MainActivity":
+                            mSharedPreferences.edit().remove("password").commit();
+                            mSharedPreferences.edit().remove("IsEnabled").commit();
+                            break;
+                        default:
+                            ;
+                            break;
+                    }
+                }
+                else
                 {
-                    case "MainActivity":
-                        ;
-                        break;
-                    default:
-                        ;
-                        break;
+                    Toast.makeText(EnterPasswordActivity.this, "password incorrect", Toast.LENGTH_LONG).show();
                 }
             }
         });

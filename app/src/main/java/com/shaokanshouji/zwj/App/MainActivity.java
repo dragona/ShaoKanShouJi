@@ -20,58 +20,67 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private ListView mListViewAppRestricted;
     private List<AppRestricted> mAppRestrictedList = new ArrayList<AppRestricted>();
+    AppRestrictedAdapter mAppRestrictedAdapter;
     private Button mButtonDisableRestriction;
     private ImageView mImageViewAdd;
+    private final int ADD_APP_ACT = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final AppRestricted app = new AppRestricted(001, "QQ", new Time(06, 00, 00), new Time(24, 00, 00),
-                new Time(01, 00, 00), new Time(00, 30, 00));
+        final AppRestricted app = new AppRestricted("", "QQ", new Time(06, 00), new Time(24, 00),
+                new Time(01, 00), new Time(00, 30));
         mAppRestrictedList.add(app);
-        mAppRestrictedList.add(new AppRestricted(001, "WeChat", new Time(06, 00, 00), new Time(24, 00, 00),
-                new Time(01, 00, 00), new Time(00, 30, 00)));
-        mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);
-        mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);
-        //mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);
-        //mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);
-        //mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);
-        //mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);
-        //mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);
-        //mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);
-        //mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);mAppRestrictedList.add(app);
+        mAppRestrictedList.add(new AppRestricted("", "WeChat", new Time(06, 00), new Time(24, 00),
+                new Time(01, 00), new Time(00, 30)));
+        for (int i = 0; i < 0; ++i) {
+            mAppRestrictedList.add(app);
+        }
+
         mListViewAppRestricted = findViewById(R.id.lv_app_restricted);
-        AppRestrictedAdapter appRestrictedAdapter= new AppRestrictedAdapter(MainActivity.this,R.layout.listview_item,mAppRestrictedList);
-        mListViewAppRestricted.setAdapter(appRestrictedAdapter);
+        mAppRestrictedAdapter = new AppRestrictedAdapter(MainActivity.this, R.layout.listview_item, mAppRestrictedList);
+        mListViewAppRestricted.setAdapter(mAppRestrictedAdapter);
         mListViewAppRestricted.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                AppRestricted app= mAppRestrictedList.get(i);
-                Toast.makeText(MainActivity.this,app.getName(),Toast.LENGTH_LONG).show();
+                AppRestricted app = mAppRestrictedList.get(i);
+                Toast.makeText(MainActivity.this, app.getName(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, RestrictionDetailActivity.class);
+                startActivity(intent);
             }
         });
         mButtonDisableRestriction = findViewById(R.id.btn_disable_restriction);
-        mButtonDisableRestriction.setOnClickListener(new View.OnClickListener()
-        {
+        mButtonDisableRestriction.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                Intent i = new Intent(MainActivity.this,EnterPasswordActivity.class);
-                i.putExtra(EnterPasswordActivity.EXTRA_WHO_CALL_ME,"MainActivity");
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, EnterPasswordActivity.class);
+                i.putExtra(EnterPasswordActivity.EXTRA_WHO_CALL_ME, "MainActivity");
                 startActivity(i);
             }
         });
         mImageViewAdd = findViewById(R.id.iv_add);
-        mImageViewAdd.setOnClickListener(new View.OnClickListener()
-        {
+        mImageViewAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                //mAppRestrictedList.add(app);
-                Intent i = new Intent(MainActivity.this,AddAppActivity.class);
-                startActivity(i);
+            public void onClick(View v) {
+                //mAppRestrictedAdapter.add(app);
+                Intent i = new Intent(MainActivity.this, AddAppActivity.class);
+                startActivityForResult(i,ADD_APP_ACT);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == ADD_APP_ACT){
+            if(resultCode == RESULT_OK){
+                if(data.hasExtra("AppRestricted")){
+                    AppRestricted app = data.getParcelableExtra("AppRestricted");
+                    mAppRestrictedAdapter.add(app);
+                }
+            }
+        }
     }
 }

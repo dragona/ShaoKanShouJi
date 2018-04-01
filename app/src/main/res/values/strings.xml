@@ -9,7 +9,7 @@
     <string name="passwords_inconsistent">The passwords you entered must be the same.</string>
     <string name="set_password_successfully">set password successfully.</string>
     <string name="no_input">password must not be null</string>
-    <string name="app_restricted_name">App</string>
+    <string name="app_restricted_name">App name</string>
     <string name="duration">duration</string>
     <string name="time_left_and_sum">left/sum</string>
     <string name="disable_restriction">disable restriction mode</string>
@@ -17,4 +17,7 @@
     <string name="time_sum">available time per day</string>
     <string name="to_disable_restriction">please enter password to disable restriction mode</string>
     <string name="to_remove_a_app">please enter password to remove the app from restriction list</string>
+    <string name="time_left">time left</string>
+    <string name="modify">modify</string>
+    <string name="remove">remove</string>
 </resources>

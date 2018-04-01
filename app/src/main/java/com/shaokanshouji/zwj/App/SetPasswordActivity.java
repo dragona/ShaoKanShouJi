@@ -1,6 +1,8 @@
 package com.shaokanshouji.zwj.App;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 public class SetPasswordActivity extends AppCompatActivity {
     private EditText mEditTextPassword1, mEditTextPassword2;
     private Button mButtonDone;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,8 @@ public class SetPasswordActivity extends AppCompatActivity {
         mButtonDone = findViewById(R.id.btn_set_password);
         mEditTextPassword1 = findViewById(R.id.et_password);
         mEditTextPassword2 = findViewById(R.id.et_password_again);
+        mSharedPreferences = getSharedPreferences("ShaoKanShouJi", Context.MODE_PRIVATE);
+        //sharedPreferencesIsEnabled.edit().putBoolean("IsEnabled",false).commit();
 
         mButtonDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +40,7 @@ public class SetPasswordActivity extends AppCompatActivity {
                     Toast.makeText(SetPasswordActivity.this, getString(R.string.set_password_successfully),
                             Toast.LENGTH_LONG).show();
                     Intent i = new Intent(SetPasswordActivity.this,MainActivity.class);
+                    mSharedPreferences.edit().putString("password",password1).putBoolean("IsEnabled",true).commit();
                     startActivity(i);
                 } else {
                     Toast.makeText(SetPasswordActivity.this, getString(R.string.passwords_inconsistent)

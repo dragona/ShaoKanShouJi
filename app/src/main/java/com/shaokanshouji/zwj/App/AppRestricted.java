@@ -1,15 +1,55 @@
 package com.shaokanshouji.zwj.App;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * Created by zwj on 2018/3/29.
  */
 
-public class AppRestricted {
-    public AppRestricted(int id,String name,Time durationStart,Time durationEnd,Time timeAvailableSum,Time timeLeft)
+public class AppRestricted implements Parcelable{
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mPackageName);
+        dest.writeString(mName);
+        dest.writeValue(mDurationStart);
+        dest.writeValue(mDurationEnd);
+        dest.writeValue(mTimeAvailableSum);
+        dest.writeValue(mTimeLeft);
+    }
+
+    public static final Parcelable.Creator<AppRestricted> CREATOR = new Creator<AppRestricted>() {
+        @Override
+        public  AppRestricted createFromParcel(Parcel source) {
+            return new AppRestricted(source.readString(), source.readString(),source.readValue(Time.class.getClassLoader()),
+                    source.readValue(Time.class.getClassLoader()),source.readValue(Time.class.getClassLoader()),
+                            source.readValue(Time.class.getClassLoader()));
+        }
+
+        @Override
+        public AppRestricted[] newArray(int size) {
+            return new AppRestricted[size];
+        }
+    };
+    public AppRestricted(String packageName,String name,Object durationStart,Object durationEnd,Object timeAvailableSum,Object timeLeft)
     {
-        mId=id;
+        mPackageName = packageName;
+        mName=name;
+        mDurationStart=(Time)durationStart;
+        mDurationEnd = (Time)durationEnd;
+        mTimeAvailableSum = (Time)timeAvailableSum;
+        mTimeLeft = (Time)timeLeft;
+    }
+    public AppRestricted(String packageName,String name,Time durationStart,Time durationEnd,Time timeAvailableSum,Time timeLeft)
+    {
+        mPackageName = packageName;
         mName=name;
         mDurationStart=durationStart;
         mDurationEnd = durationEnd;
@@ -18,27 +58,19 @@ public class AppRestricted {
     }
     public AppRestricted()
     {
-        mId=0;
+        mPackageName="";
         mName="";
         mDurationStart=new Time();
         mDurationEnd = new Time();
         mTimeAvailableSum = new Time();
         mTimeLeft = new Time();
     }
-    private int mId;
+    private String mPackageName;
     private String mName;
     private Time mDurationStart;
     private Time mDurationEnd;
     private Time mTimeAvailableSum;
     private Time mTimeLeft;
-
-    public int getId() {
-        return mId;
-    }
-
-    public void setId(int id) {
-        mId = id;
-    }
 
     public String getName() {
         return mName;
