@@ -22,6 +22,7 @@ public class EnableActivity extends AppCompatActivity {
             {
                 Intent i = new Intent(EnableActivity.this,SetPasswordActivity.class);
                 startActivity(i);
+                EnableActivity.this.finish();
             }
         });
     }

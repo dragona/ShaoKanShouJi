@@ -1,6 +1,7 @@
 package com.shaokanshouji.zwj.App;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,24 +21,29 @@ public class EnterPasswordActivity extends AppCompatActivity {
     private Button mButtonVerifyPassword;
     private SharedPreferences mSharedPreferences;
 
-    public static final String EXTRA_WHO_CALL_ME ="com.ShaoKanShouJi.zwj.App";
-    private String who;
+    public static final String EXTRA_WHO_CALL_ME = "com.ShaoKanShouJi.zwj.App";
+    private String mWho;
 
     @Override
     public void onCreate(final Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_enter_password);
-        who = getIntent().getStringExtra(EXTRA_WHO_CALL_ME);
+        mWho = getIntent().getStringExtra(EXTRA_WHO_CALL_ME);
 
         mTextViewEnterPassword = findViewById(R.id.tv_enter_password);
         mEditTextVerifyPassword = findViewById(R.id.et_verify_password);
         mButtonVerifyPassword = findViewById(R.id.btn_verify_password);
         mSharedPreferences = getSharedPreferences("ShaoKanShouJi", Context.MODE_PRIVATE);
 
-        switch(who)
-        {
-            case "MainActivity":
+        switch (mWho) {
+            case "MainAct":
                 mTextViewEnterPassword.setText(R.string.to_disable_restriction);
+                break;
+            case "RestrictionDetailActToModify":
+                mTextViewEnterPassword.setText("please enter password to modify restriction");
+                break;
+            case "RestrictionDetailActToRemove":
+                mTextViewEnterPassword.setText("please enter password to remove restriction");
                 break;
             default:
                 break;
@@ -48,22 +54,33 @@ public class EnterPasswordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //mSharedPreferences.edit().clear().commit();
                 String enterPassword = mEditTextVerifyPassword.getText().toString();
-                String password = mSharedPreferences.getString("password","");
-                if(password.equals(enterPassword)) {
+                String password = mSharedPreferences.getString("password", "");
+                if (password.equals(enterPassword)) {
                     Toast.makeText(EnterPasswordActivity.this, "password correct", Toast.LENGTH_LONG).show();
-                    Toast.makeText(EnterPasswordActivity.this, who, Toast.LENGTH_LONG).show();
-                    switch (who) {
-                        case "MainActivity":
+                    Toast.makeText(EnterPasswordActivity.this, mWho, Toast.LENGTH_LONG).show();
+                    switch (mWho) {
+                        case "MainAct":
                             mSharedPreferences.edit().remove("password").commit();
                             mSharedPreferences.edit().remove("IsEnabled").commit();
+                            Intent intent = new Intent();
+                            setResult(RESULT_OK, intent);
+                            finish();
+                            break;
+                        case "RestrictionDetailActToModify":
+                            Intent i = new Intent();
+                            setResult(RESULT_OK, i);
+                            finish();
+                            break;
+                        case "RestrictionDetailActToRemove":
+                            Intent in = new Intent();
+                            setResult(RESULT_OK, in);
+                            finish();
                             break;
                         default:
                             ;
                             break;
                     }
-                }
-                else
-                {
+                } else {
                     Toast.makeText(EnterPasswordActivity.this, "password incorrect", Toast.LENGTH_LONG).show();
                 }
             }

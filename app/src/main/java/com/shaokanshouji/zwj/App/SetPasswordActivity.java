@@ -42,6 +42,7 @@ public class SetPasswordActivity extends AppCompatActivity {
                     Intent i = new Intent(SetPasswordActivity.this,MainActivity.class);
                     mSharedPreferences.edit().putString("password",password1).putBoolean("IsEnabled",true).commit();
                     startActivity(i);
+                    finish();
                 } else {
                     Toast.makeText(SetPasswordActivity.this, getString(R.string.passwords_inconsistent)
                             + "\n" + password1 + "--" + password2, Toast.LENGTH_LONG).show();

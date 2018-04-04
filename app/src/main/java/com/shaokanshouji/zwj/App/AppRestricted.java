@@ -3,6 +3,9 @@ package com.shaokanshouji.zwj.App;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 
 /**
@@ -10,6 +13,18 @@ import java.util.Date;
  */
 
 public class AppRestricted implements Parcelable{
+    private String mPackageName;
+    private String mName;
+    private Time mDurationStart;
+    private Time mDurationEnd;
+    private Time mTimeAvailableSum;
+    private Time mTimeLeft;
+    private final static String JSON_PKG_NAME="packageName";
+    private final static String JSON_APP_NAME="name";
+    private final static String JSON_DURATION_START = "durationStart";
+    private final static String JSON_DURATION_END="durationEnd";
+    private final static String JSON_TIME_AVAILABLE="timeAvailable";
+    private final static String JSON_TIME_LEFT="timeLeft";
     @Override
     public int describeContents() {
         return 0;
@@ -28,9 +43,7 @@ public class AppRestricted implements Parcelable{
     public static final Parcelable.Creator<AppRestricted> CREATOR = new Creator<AppRestricted>() {
         @Override
         public  AppRestricted createFromParcel(Parcel source) {
-            return new AppRestricted(source.readString(), source.readString(),source.readValue(Time.class.getClassLoader()),
-                    source.readValue(Time.class.getClassLoader()),source.readValue(Time.class.getClassLoader()),
-                            source.readValue(Time.class.getClassLoader()));
+            return new AppRestricted(source);
         }
 
         @Override
@@ -38,14 +51,22 @@ public class AppRestricted implements Parcelable{
             return new AppRestricted[size];
         }
     };
-    public AppRestricted(String packageName,String name,Object durationStart,Object durationEnd,Object timeAvailableSum,Object timeLeft)
+    public AppRestricted(JSONObject jsonObject)throws JSONException{
+        mPackageName = jsonObject.getString(JSON_PKG_NAME);
+        mName = jsonObject.getString(JSON_APP_NAME);
+        mDurationStart = new Time(jsonObject.getString(JSON_DURATION_START));
+        mDurationEnd=new Time(jsonObject.getString(JSON_DURATION_END));
+        mTimeAvailableSum=new Time(jsonObject.getString(JSON_TIME_AVAILABLE));
+        mTimeLeft = new Time(jsonObject.getString(JSON_TIME_LEFT));
+    }
+    public AppRestricted(Parcel source)
     {
-        mPackageName = packageName;
-        mName=name;
-        mDurationStart=(Time)durationStart;
-        mDurationEnd = (Time)durationEnd;
-        mTimeAvailableSum = (Time)timeAvailableSum;
-        mTimeLeft = (Time)timeLeft;
+        mPackageName = source.readString();
+        mName=source.readString();
+        mDurationStart=(Time)source.readValue(Time.class.getClassLoader());
+        mDurationEnd = (Time)source.readValue(Time.class.getClassLoader());
+        mTimeAvailableSum = (Time)source.readValue(Time.class.getClassLoader());
+        mTimeLeft = (Time)source.readValue(Time.class.getClassLoader());
     }
     public AppRestricted(String packageName,String name,Time durationStart,Time durationEnd,Time timeAvailableSum,Time timeLeft)
     {
@@ -65,12 +86,23 @@ public class AppRestricted implements Parcelable{
         mTimeAvailableSum = new Time();
         mTimeLeft = new Time();
     }
-    private String mPackageName;
-    private String mName;
-    private Time mDurationStart;
-    private Time mDurationEnd;
-    private Time mTimeAvailableSum;
-    private Time mTimeLeft;
+    public JSONObject toJSON()throws JSONException{
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(JSON_PKG_NAME,mPackageName);
+        jsonObject.put(JSON_APP_NAME,mName);
+        jsonObject.put(JSON_DURATION_START,mDurationStart.toStringFormat());
+        jsonObject.put(JSON_DURATION_END,mDurationEnd.toStringFormat());
+        jsonObject.put(JSON_TIME_AVAILABLE,mTimeAvailableSum.toStringFormat());
+        jsonObject.put(JSON_TIME_LEFT,mTimeLeft.toStringFormat());
+        return jsonObject;
+    }
+    public String getPackageName() {
+        return mPackageName;
+    }
+
+    public void setPackageName(String packageName) {
+        mPackageName = packageName;
+    }
 
     public String getName() {
         return mName;
