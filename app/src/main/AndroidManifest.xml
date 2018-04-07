@@ -2,9 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shaokanshouji.zwj.App">
 
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/><!--将inspection中using system permission的severity等级改为warning-->
-    <uses-permission android:name="android.permission.Get_TASK"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+    <!--将inspection中using system permission的severity等级改为warning-->
+    <uses-permission android:name="android.permission.Get_TASK" />
 
     <application
         android:allowBackup="true"
@@ -13,10 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <service android:enabled="true"
-            android:exported="false"
+        <service
             android:name=".MonitorService"
-            />
+            android:enabled="true"
+            android:exported="false" />
+
         <activity
             android:name="com.shaokanshouji.zwj.App.LaunchActivity"
             android:screenOrientation="portrait">
